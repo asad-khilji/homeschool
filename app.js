@@ -1,135 +1,79 @@
-let users = [];
+// app.js
 
-// Load users from JSON file
-fetch('users.json')
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Could not load JSON file');
-    }
-    return response.json();
-  })
-  .then(data => {
-    users = data;
-    console.log('Users loaded:', users);
-  })
-  .catch(err => {
-    console.error('Failed to load user data', err);
-    alert('User data could not be loaded.');
-  });
+// Dummy users
+const users = [
+  { username: "teacher1", password: "pass789", role: "teacher" },
+  { username: "student1", password: "pass123", role: "student", teacher: "teacher1", parent: "parent1" },
+  { username: "student2", password: "pass124", role: "student", teacher: "teacher1", parent: "parent2" },
+  { username: "parent1", password: "pass456", role: "parent" },
+  { username: "parent2", password: "pass457", role: "parent" }
+];
 
-// Screen navigation
-function switchView(viewId) {
-  document.querySelectorAll('.container').forEach(div => {
-    div.classList.add('hidden');
+// Show one screen and hide others
+function showScreen(screenId) {
+  document.querySelectorAll(".container").forEach(div => {
+    div.classList.add("hidden");
   });
-  document.getElementById(viewId).classList.remove('hidden');
+  document.getElementById(screenId).classList.remove("hidden");
 }
 
+// Show login screen
 function showLogin() {
-  switchView('login-screen');
+  showScreen("login-screen");
 }
 
+// Back to welcome screen
 function backToWelcome() {
-  switchView('welcome-screen');
+  showScreen("welcome-screen");
 }
 
+// Logout
 function logout() {
-  switchView('welcome-screen');
+  showScreen("welcome-screen");
+  document.getElementById("username").value = "";
+  document.getElementById("password").value = "";
+  document.getElementById("main-content").innerHTML = "";
 }
 
-// Login logic
+// Login handler
 function login() {
   const username = document.getElementById("username").value.trim();
   const password = document.getElementById("password").value.trim();
 
   const user = users.find(u => u.username === username && u.password === password);
 
-  if (!user) {
-    alert("Invalid credentials!");
-    return;
+  if (user) {
+    document.getElementById("welcome-message").textContent = `Welcome, ${user.username}!`;
+    document.getElementById("role-info").textContent = `Role: ${user.role}`;
+    loadDashboard(user);
+    showScreen("dashboard-screen");
+  } else {
+    alert("Invalid credentials.");
   }
+}
 
-  document.getElementById("welcome-message").textContent = `Welcome, ${user.username}`;
-  document.getElementById("role-info").textContent = `Role: ${user.role}`;
+// Load dashboard content by role
+function loadDashboard(user) {
+  const mainContent = document.getElementById("main-content");
 
-  let dashboardHTML = '';
+  if (user.role === "teacher") {
+    const students = users.filter(u => u.role === "student" && u.teacher === user.username);
+    let html = "<h3>Your Students:</h3><ul>";
 
-  if (user.role === "Student") {
-    dashboardHTML = `
-      <h3>Your Courses:</h3>
-      <ul>${user.courses.map(course => `<li>${course}</li>`).join('')}</ul>
+    students.forEach(student => {
+      html += `<li>${student.username} (Parent: ${student.parent})</li>`;
+    });
 
-      <h3>Your Assignments:</h3>
-      <ul>
-        ${user.assignments?.length
-          ? user.assignments.map(a => `<li>${a.title} - ${a.status}</li>`).join('')
-          : '<li>No assignments found</li>'}
-      </ul>
-
-      <h3>Your Grades:</h3>
-      <ul>
-        ${user.grades?.length
-          ? user.grades.map(g => `<li>${g.course}: ${g.grade}</li>`).join('')
-          : '<li>No grades found</li>'}
-      </ul>
-    `;
-
-  } else if (user.role === "Parent") {
-    const child = users.find(u => u.username === user.child);
-    if (!child) {
-      dashboardHTML = `<p>No data found for child "${user.child}".</p>`;
-    } else {
-      dashboardHTML = `
-        <h3>Child: ${child.username}</h3>
-
-        <h3>Courses:</h3>
-        <ul>${child.courses.map(course => `<li>${course}</li>`).join('')}</ul>
-
-        <h3>Assignments:</h3>
-        <ul>
-          ${child.assignments?.length
-            ? child.assignments.map(a => `<li>${a.title} - ${a.status}</li>`).join('')
-            : '<li>No assignments found</li>'}
-        </ul>
-
-        <h3>Grades:</h3>
-        <ul>
-          ${child.grades?.length
-            ? child.grades.map(g => `<li>${g.course}: ${g.grade}</li>`).join('')
-            : '<li>No grades found</li>'}
-        </ul>
-      `;
-    }
-
-  } else if (user.role === "Teacher") {
-    const teacherStudents = users.filter(u => u.role === "Student" && u.teacher === user.username);
-
-    dashboardHTML = `<h3>Your Students:</h3>`;
-
-    if (teacherStudents.length === 0) {
-      dashboardHTML += `<p>No students assigned to you.</p>`;
-    } else {
-      teacherStudents.forEach(student => {
-        const parent = users.find(p => p.username === student.parent);
-        dashboardHTML += `
-          <div style="border:1px solid #ddd; padding:10px; margin-bottom:10px;">
-            <strong>${student.username}</strong><br/>
-            Courses: ${student.courses.join(', ')}<br/>
-            Assignments:
-            <ul>
-              ${student.assignments.map(a => `<li>${a.title} - ${a.status}</li>`).join('')}
-            </ul>
-            Grades:
-            <ul>
-              ${student.grades.map(g => `<li>${g.course}: ${g.grade}</li>`).join('')}
-            </ul>
-            Parent: ${parent ? parent.username : "N/A"}
-          </div>
-        `;
-      });
-    }
+    html += "</ul>";
+    mainContent.innerHTML = html;
+  } else if (user.role === "student") {
+    mainContent.innerHTML = "<p>Here are your assignments and grades.</p>";
+  } else if (user.role === "parent") {
+    const child = users.find(u => u.role === "student" && u.parent === user.username);
+    mainContent.innerHTML = child
+      ? `<p>Your child's username: ${child.username}</p>`
+      : "<p>No child linked to your account.</p>";
+  } else {
+    mainContent.innerHTML = "<p>Unknown role.</p>";
   }
-
-  document.getElementById("main-content").innerHTML = dashboardHTML;
-  switchView('dashboard-screen');
 }
