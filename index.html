@@ -26,15 +26,15 @@
 
   <!-- Student Dashboard -->
   <div class="dashboard-layout hidden" id="dashboard-screen">
-    <div class="sidebar">
-      <h3 id="panel-title">Student Panel</h3>
-      <ul>
-        <li onclick="showTab('dashboard')">Dashboard</li>
-        <li onclick="showTab('assignments')">Assignments</li>
-        <li onclick="showTab('grades')">Grades</li>
-      </ul>
-      <button onclick="logout()">Logout</button>
-    </div>
+   <div class="sidebar">
+  <h3 class="sidebar-title">Student Panel</h3>
+  <ul class="sidebar-menu">
+    <li onclick="showTab('dashboard')">Dashboard</li>
+    <li onclick="showTab('assignments')">Assignments</li>
+    <li onclick="showTab('grades')">Grades</li>
+  </ul>
+  <button class="logout-button" onclick="logout()">Logout</button>
+</div>
     <div class="dashboard-content">
       <div id="dashboard-tab" class="section">
         <h3 id="welcome-message"></h3>
@@ -54,26 +54,44 @@
   </div>
 
   <!-- Teacher Dashboard -->
-  <div class="dashboard-layout hidden" id="teacher-screen">
-    <div class="sidebar">
-      <h3 id="teacher-sidebar-name">Teacher Panel</h3>
-      <ul>
-        <li onclick="logout()">Logout</li>
-      </ul>
-    </div>
-    <div class="dashboard-content" id="teacher-dashboard"></div>
+<!-- Teacher Dashboard -->
+<div class="dashboard-layout hidden" id="teacher-screen">
+  <div class="sidebar">
+    <h3 class="sidebar-title" id="teacher-sidebar-name">Teacher Panel</h3>
+    <ul class="sidebar-menu">
+      <li onclick="showTeacherTab('dashboard')">Dashboard</li>
+      <li onclick="showTeacherTab('assignments')">Assignments</li>
+      <li onclick="showTeacherTab('grades')">Grades</li>
+    </ul>
+    <button class="logout-button" onclick="logout()">Logout</button>
   </div>
+  <div class="dashboard-content">
+    <div id="teacher-dashboard-tab" class="section"></div>
+    <div id="teacher-assignments-tab" class="section hidden"></div>
+    <div id="teacher-grades-tab" class="section hidden"></div>
+  </div>
+</div>
 
-  <!-- Parent Dashboard -->
-  <div class="dashboard-layout hidden" id="parent-screen">
-    <div class="sidebar">
-      <h3 id="parent-sidebar-name">Parent Panel</h3>
-      <ul>
-        <li onclick="logout()">Logout</li>
-      </ul>
-    </div>
-    <div class="dashboard-content" id="parent-dashboard"></div>
+
+<!-- Parent Dashboard -->
+<!-- Parent Dashboard -->
+<div class="dashboard-layout hidden" id="parent-screen">
+  <div class="sidebar">
+    <h3 class="sidebar-title" id="parent-sidebar-name">Parent Panel</h3>
+    <ul class="sidebar-menu">
+      <li onclick="showParentTab('dashboard')">Dashboard</li>
+      <li onclick="showParentTab('assignments')">Assignments</li>
+      <li onclick="showParentTab('grades')">Grades</li>
+    </ul>
+    <button class="logout-button" onclick="logout()">Logout</button>
   </div>
+  <div class="dashboard-content">
+    <div id="parent-dashboard-tab" class="section"></div>
+    <div id="parent-assignments-tab" class="section hidden"></div>
+    <div id="parent-grades-tab" class="section hidden"></div>
+  </div>
+</div>
+
 
   <script src="app.js"></script>
 </body>
