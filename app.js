@@ -60,9 +60,11 @@ function login() {
     showGrades(user.username);
     showScreen("dashboard-screen");
   } else if (user.role === "teacher") {
+    document.getElementById("teacher-sidebar-name").innerText = `Teacher Panel - ${user.name}`;
     showTeacherDashboard(user);
     showScreen("teacher-screen");
   } else if (user.role === "parent") {
+    document.getElementById("parent-sidebar-name").innerText = `Parent Panel - ${user.name}`;
     showParentDashboard(user);
     showScreen("parent-screen");
   }
@@ -122,7 +124,18 @@ function showTeacherDashboard(teacher) {
   const students = users.filter(u => u.role === "student" && u.teacher === teacher.username);
 
   students.forEach(student => {
-    teacherDiv.innerHTML += `<p><strong>${student.name}</strong> - ${student.gradeLevel}</p>`;
+    const studentAssignments = assignments.filter(a => a.student === student.username);
+    const studentGrades = grades.filter(g => g.student === student.username);
+
+    teacherDiv.innerHTML += `<div style="margin-bottom: 20px;"><p><strong>${student.name}</strong> - ${student.gradeLevel}</p><h4>Assignments:</h4><ul>`;
+    studentAssignments.forEach(a => {
+      teacherDiv.innerHTML += `<li>${a.title} - Due: ${a.due}</li>`;
+    });
+    teacherDiv.innerHTML += `</ul><h4>Grades:</h4><ul>`;
+    studentGrades.forEach(g => {
+      teacherDiv.innerHTML += `<li>${g.title} - Grade: ${g.grade}</li>`;
+    });
+    teacherDiv.innerHTML += `</ul></div>`;
   });
 }
 
