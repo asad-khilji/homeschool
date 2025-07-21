@@ -107,30 +107,44 @@ button:hover {
   justify-content: flex-start;
 }
 
-.sidebar h3 {
+.sidebar-title {
   margin-bottom: 20px;
   font-size: 20px;
   font-weight: 600;
+  color: white;
 }
 
-.sidebar ul {
+.sidebar-menu {
   list-style: none;
   padding: 0;
 }
 
-.sidebar ul li {
+.sidebar-menu li {
   margin: 15px 0;
   cursor: pointer;
   font-size: 16px;
+  transition: color 0.2s ease;
 }
 
-.sidebar ul li:hover {
+.sidebar-menu li:hover {
   text-decoration: underline;
+  color: #ecf0f1;
 }
 
-.sidebar button {
+.logout-button {
+  background: #e74c3c;
   margin-top: auto;
   padding: 10px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  color: white;
+  transition: background 0.3s ease;
+}
+
+.logout-button:hover {
+  background: #c0392b;
 }
 
 /* Dashboard content area */
@@ -155,10 +169,6 @@ button:hover {
 
 .section li {
   margin-bottom: 10px;
-}
-
-#panel-title {
-  color: "white";
 }
 
 #parent-sidebar-name {
