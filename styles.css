@@ -156,3 +156,7 @@ button:hover {
 .section li {
   margin-bottom: 10px;
 }
+
+#panel-title {
+  color: "white";
+}
