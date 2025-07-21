@@ -24,7 +24,7 @@
     <p><a href="#" onclick="backToWelcome()">Back</a></p>
   </div>
 
-  <!-- Dashboard Screen -->
+  <!-- Student Dashboard -->
   <div class="dashboard-layout hidden" id="dashboard-screen">
     <div class="sidebar">
       <h3 id="panel-title">Student Panel</h3>
@@ -51,6 +51,28 @@
         <ul id="grade-list"></ul>
       </div>
     </div>
+  </div>
+
+  <!-- Teacher Dashboard -->
+  <div class="dashboard-layout hidden" id="teacher-screen">
+    <div class="sidebar">
+      <h3 id="teacher-sidebar-name">Teacher Panel</h3>
+      <ul>
+        <li onclick="logout()">Logout</li>
+      </ul>
+    </div>
+    <div class="dashboard-content" id="teacher-dashboard"></div>
+  </div>
+
+  <!-- Parent Dashboard -->
+  <div class="dashboard-layout hidden" id="parent-screen">
+    <div class="sidebar">
+      <h3 id="parent-sidebar-name">Parent Panel</h3>
+      <ul>
+        <li onclick="logout()">Logout</li>
+      </ul>
+    </div>
+    <div class="dashboard-content" id="parent-dashboard"></div>
   </div>
 
   <script src="app.js"></script>
