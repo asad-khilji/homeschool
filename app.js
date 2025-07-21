@@ -2,22 +2,18 @@
 
 // Dummy data
 const users = [
-  { username: "joe", password: "mtolive300", role: "teacher" },
-  { username: "david", password: "mtolive300", role: "teacher" },
-  { username: "john", password: "mtolive300", role: "student", teacher: "joe", parent: "mike" },
-  { username: "jake", password: "mtolive300", role: "student", teacher: "joe", parent: "jeff" },
-  { username: "danny", password: "mtolive300", role: "student", teacher: "david", parent: "kyle" },
-  { username: "mike", password: "mtolive300", role: "parent" },
-  { username: "kyle", password: "mtolive300", role: "parent" },
-  { username: "jeff", password: "mtolive300", role: "parent" }
+  { username: "teacher1", password: "pass789", role: "teacher" },
+  { username: "student1", password: "pass123", role: "student", teacher: "teacher1", parent: "parent1" },
+  { username: "student2", password: "pass124", role: "student", teacher: "teacher1", parent: "parent2" },
+  { username: "parent1", password: "pass456", role: "parent" },
+  { username: "parent2", password: "pass457", role: "parent" }
 ];
 
 // Assignments DB
-let assignments = [
-  { student: "john", title: "Math Homework", grade: "A" },
-  { student: "john", title: "History Essay", grade: "B+" },
-  { student: "danny", title: "History Essay", grade: "B+" },
-  { student: "jake", title: "Science Project", grade: "A-" }
+const assignments = [
+  { student: "student1", title: "Math Homework", grade: "A" },
+  { student: "student1", title: "History Essay", grade: "B+" },
+  { student: "student2", title: "Science Project", grade: "A-" }
 ];
 
 // Show one screen
@@ -77,11 +73,7 @@ function loadDashboard(user) {
         html += `<li>${a.title} — Grade: ${a.grade}</li>`;
       });
 
-      html += `</ul>
-        <input type="text" placeholder="New assignment" id="assign-${student.username}">
-        <input type="text" placeholder="Grade" id="grade-${student.username}">
-        <button onclick="addAssignment('${student.username}')">Add</button>
-      </li>`;
+      html += "</ul></li>";
     });
 
     html += "</ul>";
@@ -109,17 +101,5 @@ function loadDashboard(user) {
     } else {
       main.innerHTML = "<p>No child linked to your account.</p>";
     }
-  }
-}
-
-// Teacher adds assignment
-function addAssignment(studentUsername) {
-  const title = document.getElementById(`assign-${studentUsername}`).value.trim();
-  const grade = document.getElementById(`grade-${studentUsername}`).value.trim();
-  if (title && grade) {
-    assignments.push({ student: studentUsername, title, grade });
-    login(); // Refresh dashboard
-  } else {
-    alert("Please fill in both assignment and grade.");
   }
 }
