@@ -2,18 +2,21 @@
 
 // Dummy data
 const users = [
-  { username: "teacher1", password: "pass789", role: "teacher" },
-  { username: "student1", password: "pass123", role: "student", teacher: "teacher1", parent: "parent1" },
-  { username: "student2", password: "pass124", role: "student", teacher: "teacher1", parent: "parent2" },
-  { username: "parent1", password: "pass456", role: "parent" },
-  { username: "parent2", password: "pass457", role: "parent" }
+  { username: "joe", password: "mtolive300", role: "teacher" },
+  { username: "john", password: "mtolive300", role: "student", teacher: "joe", parent: "mike" },
+  { username: "jake", password: "mtolive300", role: "student", teacher: "joe", parent: "mike" },
+  { username: "mike", password: "mtolive300", role: "parent" },
+  { username: "david", password: "mtolive300", role: "teacher" },
+  { username: "danny", password: "mtolive300", role: "student", teacher: "david", parent: "jeff" },
+  { username: "jeff", password: "mtolive300", role: "parent" }
 ];
 
 // Assignments DB
 const assignments = [
-  { student: "student1", title: "Math Homework", grade: "A" },
-  { student: "student1", title: "History Essay", grade: "B+" },
-  { student: "student2", title: "Science Project", grade: "A-" }
+  { student: "john", title: "Math Homework", grade: "A" },
+  { student: "john", title: "History Essay", grade: "B+" },
+  { student: "jake", title: "Science Project", grade: "A-" },
+  { student: "danny", title: "Science Project", grade: "" }
 ];
 
 // Show one screen
