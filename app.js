@@ -1,19 +1,28 @@
 // app.js
 
-// Dummy users
+// Dummy data
 const users = [
-  { username: "teacher1", password: "pass789", role: "teacher" },
-  { username: "student1", password: "pass123", role: "student", teacher: "teacher1", parent: "parent1" },
-  { username: "student2", password: "pass124", role: "student", teacher: "teacher1", parent: "parent2" },
-  { username: "parent1", password: "pass456", role: "parent" },
-  { username: "parent2", password: "pass457", role: "parent" }
+  { username: "joe", password: "mtolive300", role: "teacher" },
+  { username: "david", password: "mtolive300", role: "teacher" },
+  { username: "john", password: "mtolive300", role: "student", teacher: "joe", parent: "mike" },
+  { username: "jake", password: "mtolive300", role: "student", teacher: "joe", parent: "jeff" },
+  { username: "danny", password: "mtolive300", role: "student", teacher: "david", parent: "kyle" },
+  { username: "mike", password: "mtolive300", role: "parent" },
+  { username: "kyle", password: "mtolive300", role: "parent" },
+  { username: "jeff", password: "mtolive300", role: "parent" }
 ];
 
-// Show one screen and hide others
+// Assignments DB
+let assignments = [
+  { student: "john", title: "Math Homework", grade: "A" },
+  { student: "john", title: "History Essay", grade: "B+" },
+  { student: "danny", title: "History Essay", grade: "B+" },
+  { student: "jake", title: "Science Project", grade: "A-" }
+];
+
+// Show one screen
 function showScreen(screenId) {
-  document.querySelectorAll(".container").forEach(div => {
-    div.classList.add("hidden");
-  });
+  document.querySelectorAll(".container").forEach(div => div.classList.add("hidden"));
   document.getElementById(screenId).classList.remove("hidden");
 }
 
@@ -22,7 +31,7 @@ function showLogin() {
   showScreen("login-screen");
 }
 
-// Back to welcome screen
+// Back to welcome
 function backToWelcome() {
   showScreen("welcome-screen");
 }
@@ -35,7 +44,7 @@ function logout() {
   document.getElementById("main-content").innerHTML = "";
 }
 
-// Login handler
+// Login
 function login() {
   const username = document.getElementById("username").value.trim();
   const password = document.getElementById("password").value.trim();
@@ -52,28 +61,65 @@ function login() {
   }
 }
 
-// Load dashboard content by role
+// Dashboard view
 function loadDashboard(user) {
-  const mainContent = document.getElementById("main-content");
+  const main = document.getElementById("main-content");
 
   if (user.role === "teacher") {
     const students = users.filter(u => u.role === "student" && u.teacher === user.username);
     let html = "<h3>Your Students:</h3><ul>";
 
     students.forEach(student => {
-      html += `<li>${student.username} (Parent: ${student.parent})</li>`;
+      html += `<li><strong>${student.username}</strong> (Parent: ${student.parent})<br/>Assignments:<ul>`;
+
+      const studentAssignments = assignments.filter(a => a.student === student.username);
+      studentAssignments.forEach(a => {
+        html += `<li>${a.title} — Grade: ${a.grade}</li>`;
+      });
+
+      html += `</ul>
+        <input type="text" placeholder="New assignment" id="assign-${student.username}">
+        <input type="text" placeholder="Grade" id="grade-${student.username}">
+        <button onclick="addAssignment('${student.username}')">Add</button>
+      </li>`;
     });
 
     html += "</ul>";
-    mainContent.innerHTML = html;
+    main.innerHTML = html;
+
   } else if (user.role === "student") {
-    mainContent.innerHTML = "<p>Here are your assignments and grades.</p>";
+    const studentAssignments = assignments.filter(a => a.student === user.username);
+    let html = "<h3>Your Assignments:</h3><ul>";
+    studentAssignments.forEach(a => {
+      html += `<li>${a.title} — Grade: ${a.grade}</li>`;
+    });
+    html += "</ul>";
+    main.innerHTML = html;
+
   } else if (user.role === "parent") {
     const child = users.find(u => u.role === "student" && u.parent === user.username);
-    mainContent.innerHTML = child
-      ? `<p>Your child's username: ${child.username}</p>`
-      : "<p>No child linked to your account.</p>";
+    if (child) {
+      const studentAssignments = assignments.filter(a => a.student === child.username);
+      let html = `<p>Your child's username: <strong>${child.username}</strong></p><h3>Assignments:</h3><ul>`;
+      studentAssignments.forEach(a => {
+        html += `<li>${a.title} — Grade: ${a.grade}</li>`;
+      });
+      html += "</ul>";
+      main.innerHTML = html;
+    } else {
+      main.innerHTML = "<p>No child linked to your account.</p>";
+    }
+  }
+}
+
+// Teacher adds assignment
+function addAssignment(studentUsername) {
+  const title = document.getElementById(`assign-${studentUsername}`).value.trim();
+  const grade = document.getElementById(`grade-${studentUsername}`).value.trim();
+  if (title && grade) {
+    assignments.push({ student: studentUsername, title, grade });
+    login(); // Refresh dashboard
   } else {
-    mainContent.innerHTML = "<p>Unknown role.</p>";
+    alert("Please fill in both assignment and grade.");
   }
 }
