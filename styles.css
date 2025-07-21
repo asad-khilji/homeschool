@@ -178,3 +178,42 @@ button:hover {
 #teacher-sidebar-name {
   color: "white";
 }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dashboard-layout {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .sidebar {
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+  }
+
+  .content {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .container {
+    max-width: 100%;
+    padding: 20px;
+    margin: 10px;
+  }
+
+  input[type="text"],
+  input[type="password"] {
+    font-size: 1rem;
+  }
+
+  button {
+    font-size: 1rem;
+    padding: 10px 20px;
+  }
+
+  h1, h2, h3 {
+    font-size: 1.5rem;
+  }
+}
